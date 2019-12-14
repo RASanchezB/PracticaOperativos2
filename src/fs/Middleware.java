@@ -68,7 +68,7 @@ public class Middleware extends UnicastRemoteObject implements FSInterfaz {
     @Override
     public void send(String fileChanged) throws RemoteException {
         System.out.println("Broadcast del servidor: " + fileChanged);
-        if (fileChanged.equals(frameCliente.abierto)) {
+        if (fileChanged.equals(frameCliente.archivo_abierto)) {
             frameCliente.conflicto();
         } else {
             frameCliente.cargarArchivo();

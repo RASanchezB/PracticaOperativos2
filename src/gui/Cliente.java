@@ -17,32 +17,32 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
 public class Cliente extends javax.swing.JFrame {
-public static final String ANSI_GREEN = "\u001B[32m";
+public static final String ANSI_PURPLE = "\u001B[35m";
  public static final String ANSI_RESET = "\u001B[0m";
-    private static final String IP = "192.168.56.1"; // Puedes cambiar a localhost
-    private static final int PUERTO = 1100; //Si cambias aquí el puerto, recuerda cambiarlo en el servidor
+    private static final String IP = "192.168.56.1";
+    private static final int PUERTO = 1100; 
 
     public Registry registry;
     public FSInterfaz servidor;
     public FSInterfaz cliente;
-    public String abierto;
+    public String archivo_abierto;
 
     public Cliente() throws RemoteException, NotBoundException {
         initComponents();
-        name = JOptionPane.showInputDialog(this, "Identifiquese:", "Bienvenido", JOptionPane.QUESTION_MESSAGE);
-        cliente = new Middleware(name, this);
+        nombre = JOptionPane.showInputDialog(this, "Identifiquese:", "Bienvenido", JOptionPane.QUESTION_MESSAGE);
+        cliente = new Middleware(nombre, this);
         registry = LocateRegistry.getRegistry(IP, PUERTO);
-        System.out.println(ANSI_GREEN+"REGISTRADO EN EL PUERTO "+PUERTO+ANSI_RESET);
+        System.out.println(ANSI_PURPLE+"REGISTRADO EN EL PUERTO "+PUERTO+ANSI_RESET);
         System.out.println("Buscando........");
-        servidor = (FSInterfaz) registry.lookup("fs"); // Buscar en el registro...
-        System.out.println(ANSI_GREEN+"Cliente Agregado."+ANSI_RESET);
+        servidor = (FSInterfaz) registry.lookup("fs");
+        System.out.println(ANSI_PURPLE+"Cliente Agregado."+ANSI_RESET);
         servidor.agregarCliente(cliente);
         System.out.println("Cargando Archivo....");
         cargarArchivo();
-        System.out.println(ANSI_GREEN+"Archivos Cargados"+ANSI_RESET);
+        System.out.println(ANSI_PURPLE+"Archivos Cargados"+ANSI_RESET);
         ta_archivo.setVisible(false);
         btn_guardar.setVisible(false);
-        jLabel1.setText(name);
+        jLabel1.setText(nombre);
         this.setLocationRelativeTo(null);
     }
 
@@ -65,7 +65,7 @@ public static final String ANSI_GREEN = "\u001B[32m";
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         btn_cargarArchivo = new javax.swing.JButton();
-        btn_desmontarFS = new javax.swing.JButton();
+        bt_desmontarFS = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         btn_guardar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
@@ -167,11 +167,11 @@ public static final String ANSI_GREEN = "\u001B[32m";
             }
         });
 
-        btn_desmontarFS.setBackground(new java.awt.Color(255, 255, 255));
-        btn_desmontarFS.setText("Desmontar FS");
-        btn_desmontarFS.addActionListener(new java.awt.event.ActionListener() {
+        bt_desmontarFS.setBackground(new java.awt.Color(255, 255, 255));
+        bt_desmontarFS.setText("Desmontar FS");
+        bt_desmontarFS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_desmontarFSActionPerformed(evt);
+                bt_desmontarFSActionPerformed(evt);
             }
         });
 
@@ -180,14 +180,14 @@ public static final String ANSI_GREEN = "\u001B[32m";
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(btn_cargarArchivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(btn_desmontarFS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(bt_desmontarFS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(btn_cargarArchivo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_desmontarFS)
+                .addComponent(bt_desmontarFS)
                 .addGap(0, 2, Short.MAX_VALUE))
         );
 
@@ -318,25 +318,25 @@ public static final String ANSI_GREEN = "\u001B[32m";
         }
     }//GEN-LAST:event_btn_cargarArchivoActionPerformed
 
-    private void btn_desmontarFSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_desmontarFSActionPerformed
+    private void bt_desmontarFSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_desmontarFSActionPerformed
 
         try {
             if (!montar) {
-                btn_desmontarFS.setText("Desmontar File System");
+                bt_desmontarFS.setText("Desmontar File System");
                 arbolCliente.setEnabled(true);
                 btn_cargarArchivo.setEnabled(true);
                 montar = !montar;
                 servidor.agregarCliente(cliente);
                 cargarArchivo();
             } else {
-                servidor.desmontar(name);
+                servidor.desmontar(nombre);
 
                 // cerrar el archivo
-                abierto = "";
+                archivo_abierto = "";
                 ta_archivo.setVisible(false);
                 btn_guardar.setVisible(false);
                 // volver a cargar la estructura
-                btn_desmontarFS.setText("Montar FS");
+                bt_desmontarFS.setText("Montar FS");
                 arbolCliente.setEnabled(false);
                 btn_cargarArchivo.setEnabled(false);
                 montar = !montar;
@@ -345,7 +345,7 @@ public static final String ANSI_GREEN = "\u001B[32m";
             System.out.println(e);
         }
 
-    }//GEN-LAST:event_btn_desmontarFSActionPerformed
+    }//GEN-LAST:event_bt_desmontarFSActionPerformed
 
     private void arbolClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_arbolClienteMouseClicked
         arbolCliente.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -355,7 +355,7 @@ public static final String ANSI_GREEN = "\u001B[32m";
             Object v1 = arbolCliente.getSelectionPath().getLastPathComponent();
             nodo_seleccionado = (DefaultMutableTreeNode) v1;
             if (nodo_seleccionado.getUserObject() instanceof FileConText) {
-                file_seleccionado = ((FileConText) nodo_seleccionado.getUserObject()).getFile();
+                archivo_seleccionado = ((FileConText) nodo_seleccionado.getUserObject()).getFile();
                 fct_seleccionado = (FileConText) nodo_seleccionado.getUserObject();
                 if (fct_seleccionado.isDir) {
                     popMenuDir.show(evt.getComponent(), evt.getX(), evt.getY());
@@ -472,19 +472,19 @@ public static final String ANSI_GREEN = "\u001B[32m";
         } catch (Exception e) {
             System.out.println(e);
         }
-        cargarArchivo();
+        cargarArchivo();    
     }//GEN-LAST:event_eliminarDir1ActionPerformed
     private void abrirArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirArchivoActionPerformed
         ta_archivo.setText(fct_seleccionado.getText());
         ta_archivo.setVisible(true);
         btn_guardar.setVisible(true);
-        abierto = dirLocalServer(new File(fct_seleccionado.getFile().getAbsolutePath()));
-        System.out.println(ANSI_GREEN+"Archivo : " + abierto+" abierto exitosamente"+ANSI_RESET);
+        archivo_abierto = dirLocalServer(new File(fct_seleccionado.getFile().getAbsolutePath()));
+        System.out.println(ANSI_PURPLE+"Archivo : " + archivo_abierto+" abierto exitosamente"+ANSI_RESET);
     }//GEN-LAST:event_abrirArchivoActionPerformed
     private void btn_guardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_guardarMouseClicked
         try {
-            servidor.editarArchivo(file_seleccionado, ta_archivo.getText());
-            abierto = "";
+            servidor.editarArchivo(archivo_seleccionado, ta_archivo.getText());
+            archivo_abierto = "";
             JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente");
         } catch (Exception e) {
             e.printStackTrace();
@@ -496,21 +496,18 @@ public static final String ANSI_GREEN = "\u001B[32m";
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         System.out.println("Cerrando...");
         try {
-            servidor.desmontar(name);
+            servidor.desmontar(nombre);
         } catch (RemoteException e) {
             System.out.println(e);
         }
     }//GEN-LAST:event_formWindowClosing
 
     public void conflicto() {
-        // se detecto un conflicto
-        // notificarlo
-        JOptionPane.showMessageDialog(this, "Se detecto un conflicto con el archivo que tiene abierto:\n" + abierto);
+        JOptionPane.showMessageDialog(this, "Se detectó un conflicto con el archivo que tiene abierto:\n" + archivo_abierto);
         // cerrar el archivo
-        abierto = "";
+        archivo_abierto = "";
         ta_archivo.setVisible(false);
         btn_guardar.setVisible(false);
-        // volver a cargar la estructura
         cargarArchivo();
     }
     
@@ -525,9 +522,8 @@ public static final String ANSI_GREEN = "\u001B[32m";
             resetCache();
             
             // Recorrer todos los archivos en el arbol
-         
             recorrer((DefaultMutableTreeNode) arbolCliente.getModel().getRoot());
-            System.out.println(ANSI_GREEN+"Archivo Cargado exitosamente"+ANSI_RESET);
+            System.out.println(ANSI_PURPLE+"Archivo Cargado exitosamente"+ANSI_RESET);
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -535,7 +531,7 @@ public static final String ANSI_GREEN = "\u001B[32m";
     }
 
     public void recorrer(DefaultMutableTreeNode nodo) throws IOException {
-        // Recorrer todos los archivos en el arbol e imprimir su info
+        // Recorrer todos los archivos en el arbol para imprimir su información
         FileConText file = (FileConText) nodo.getUserObject();
         boolean isFile = file.isFile;
         boolean isDir = file.isDir;
@@ -562,22 +558,20 @@ public static final String ANSI_GREEN = "\u001B[32m";
 
     public String dirLocalServer(File dirServer) {
         // Obtener el dir local, dado el del server
-        String[] spl = dirServer.getAbsolutePath().split("RootServer");
-        if (spl.length == 1) {
+        String[] split = dirServer.getAbsolutePath().split("RootServer");
+        if (split.length == 1) {
             return "RootServer";
         }
-
-        return "RootServer" + spl[1];
+        return "RootServer" + split[1];
     }
     
     public String dirLocal(File dirServer) {
-        // Obtener el dir local, dado el del server
-        String[] spl = dirServer.getAbsolutePath().split("RootServer");
-        if (spl.length == 1) {
-            return "RootClient" + name;
+        // Obtener el directorio local, dado el del server
+        String[] split = dirServer.getAbsolutePath().split("RootServer");
+        if (split.length == 1) {
+            return "RootClient" + nombre;
         }
-
-        return "RootClient" + name + spl[1];
+        return "RootClient" + nombre + split[1];
     }
 
     public void writeFile(String filename, String text) {
@@ -589,7 +583,7 @@ public static final String ANSI_GREEN = "\u001B[32m";
     }
 
     public void resetCache() {
-        File rootClient = new File("RootClient" + name);
+        File rootClient = new File("RootClient" + nombre);
 
         // Borrar el directorio de cache del cliente
         eliminarDirs(rootClient);
@@ -677,8 +671,8 @@ public static final String ANSI_GREEN = "\u001B[32m";
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem abrirArchivo;
     private javax.swing.JTree arbolCliente;
+    private javax.swing.JButton bt_desmontarFS;
     private javax.swing.JButton btn_cargarArchivo;
-    private javax.swing.JButton btn_desmontarFS;
     private javax.swing.JButton btn_guardar;
     private javax.swing.JMenuItem crearArchivo;
     private javax.swing.JMenuItem crearArchivo1;
@@ -702,9 +696,9 @@ public static final String ANSI_GREEN = "\u001B[32m";
     private javax.swing.JTextArea ta_archivo;
     // End of variables declaration//GEN-END:variables
     DefaultMutableTreeNode nodo_seleccionado;
-    File file_seleccionado;
-    File root;
+    File archivo_seleccionado;
+    File raiz;
     FileConText fct_seleccionado;
-    String name;
+    String nombre;
     boolean montar = true;
 }

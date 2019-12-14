@@ -21,7 +21,7 @@ import javax.swing.tree.DefaultTreeModel;
 public class Servidor extends javax.swing.JFrame {
 
     private static final int PUERTO = 1100; 
-    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_RESET = "\u001B[0m";
     public Registry registry;
     public Middleware servidor;
@@ -44,7 +44,7 @@ public class Servidor extends javax.swing.JFrame {
 
             Path dir = Paths.get("RootServer");
             Thread hilo = new Thread(new WatchDir(dir, true, this));
-            System.out.println(ANSI_GREEN+"Inicia el hilo"+ANSI_RESET);
+            System.out.println(ANSI_PURPLE+"Inicia el hilo"+ANSI_RESET);
             hilo.start();
         } catch (IOException e) {
             System.out.println(e);
