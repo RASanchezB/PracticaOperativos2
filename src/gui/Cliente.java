@@ -29,7 +29,7 @@ public static final String ANSI_GREEN = "\u001B[32m";
 
     public Cliente() throws RemoteException, NotBoundException {
         initComponents();
-        name = JOptionPane.showInputDialog(this, "Identifiquese:", "Ingreso de Nuevo Cliente", JOptionPane.QUESTION_MESSAGE);
+        name = JOptionPane.showInputDialog(this, "Identifiquese:", "Bienvenido", JOptionPane.QUESTION_MESSAGE);
         cliente = new Middleware(name, this);
         registry = LocateRegistry.getRegistry(IP, PUERTO);
         System.out.println(ANSI_GREEN+"REGISTRADO EN EL PUERTO "+PUERTO+ANSI_RESET);
@@ -151,10 +151,9 @@ public static final String ANSI_GREEN = "\u001B[32m";
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(0, 0, 51));
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Vista del Cliente", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Vista del Cliente", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14))); // NOI18N
 
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Cliente");
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -214,7 +213,7 @@ public static final String ANSI_GREEN = "\u001B[32m";
             .addComponent(btn_guardar)
         );
 
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel4.setBackground(new java.awt.Color(204, 204, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Archivo Abierto", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 12))); // NOI18N
 
         ta_archivo.setColumns(20);
@@ -232,7 +231,7 @@ public static final String ANSI_GREEN = "\u001B[32m";
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
         );
 
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setBackground(new java.awt.Color(204, 204, 255));
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Directorios", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
@@ -255,7 +254,6 @@ public static final String ANSI_GREEN = "\u001B[32m";
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Bienvenido:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
