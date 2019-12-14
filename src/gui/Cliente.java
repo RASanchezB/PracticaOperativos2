@@ -23,7 +23,7 @@ public static final String ANSI_GREEN = "\u001B[32m";
     private static final int PUERTO = 1100; //Si cambias aquí el puerto, recuerda cambiarlo en el servidor
 
     public Registry registry;
-    public FSInterfaz server;
+    public FSInterfaz servidor;
     public FSInterfaz cliente;
     public String abierto;
 
@@ -34,9 +34,9 @@ public static final String ANSI_GREEN = "\u001B[32m";
         registry = LocateRegistry.getRegistry(IP, PUERTO);
         System.out.println(ANSI_GREEN+"REGISTRADO EN EL PUERTO "+PUERTO+ANSI_RESET);
         System.out.println("Buscando........");
-        server = (FSInterfaz) registry.lookup("fs"); // Buscar en el registro...
+        servidor = (FSInterfaz) registry.lookup("fs"); // Buscar en el registro...
         System.out.println(ANSI_GREEN+"Cliente Agregado."+ANSI_RESET);
-        server.agregarCliente(cliente);
+        servidor.agregarCliente(cliente);
         System.out.println("Cargando Archivo....");
         cargarArchivo();
         System.out.println(ANSI_GREEN+"Archivos Cargados"+ANSI_RESET);
@@ -85,11 +85,6 @@ public static final String ANSI_GREEN = "\u001B[32m";
         popMenuDir.add(crearArchivo);
 
         crearDir.setText("Crear Directorio");
-        crearDir.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                crearDirMouseClicked(evt);
-            }
-        });
         crearDir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 crearDirActionPerformed(evt);
@@ -133,11 +128,6 @@ public static final String ANSI_GREEN = "\u001B[32m";
         popMenuRoot.add(crearArchivo1);
 
         crearDir1.setText("Crear Directorio");
-        crearDir1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                crearDir1MouseClicked(evt);
-            }
-        });
         crearDir1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 crearDir1ActionPerformed(evt);
@@ -209,11 +199,6 @@ public static final String ANSI_GREEN = "\u001B[32m";
         btn_guardar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btn_guardarMouseClicked(evt);
-            }
-        });
-        btn_guardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_guardarActionPerformed(evt);
             }
         });
 
@@ -326,7 +311,7 @@ public static final String ANSI_GREEN = "\u001B[32m";
 
     private void btn_cargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cargarArchivoActionPerformed
         try {
-            DefaultTreeModel modelo = server.cargarDirectorio();
+            DefaultTreeModel modelo = servidor.cargarDirectorio();
             arbolCliente.setModel(modelo);
         } catch (Exception e) {
             System.out.println(e);
@@ -341,10 +326,10 @@ public static final String ANSI_GREEN = "\u001B[32m";
                 arbolCliente.setEnabled(true);
                 btn_cargarArchivo.setEnabled(true);
                 montar = !montar;
-                server.agregarCliente(cliente);
+                servidor.agregarCliente(cliente);
                 cargarArchivo();
             } else {
-                server.desmontar(name);
+                servidor.desmontar(name);
 
                 // cerrar el archivo
                 abierto = "";
@@ -384,10 +369,6 @@ public static final String ANSI_GREEN = "\u001B[32m";
         }
     }//GEN-LAST:event_arbolClienteMouseClicked
 
-    private void crearDirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_crearDirMouseClicked
-
-    }//GEN-LAST:event_crearDirMouseClicked
-
     private void crearDirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearDirActionPerformed
         String path = pathArchivo();
         String name = JOptionPane.showInputDialog(this, "Nombre del Directorio");
@@ -396,14 +377,14 @@ public static final String ANSI_GREEN = "\u001B[32m";
         File dir = new File(path);
 
         try {
-            server.crearArchivo(dir, false);
+            servidor.crearArchivo(dir, false);
+            JOptionPane.showMessageDialog(this, "Directorio creado exitosamente");
         } catch (Exception e) {
             System.out.println(e);
         }
         cargarArchivo();
 
     }//GEN-LAST:event_crearDirActionPerformed
-
     private void eliminarDirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarDirActionPerformed
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) arbolCliente.getLastSelectedPathComponent();
         String path = pathArchivo();
@@ -411,79 +392,74 @@ public static final String ANSI_GREEN = "\u001B[32m";
         File dir = new File(path);
 
         try {
-            server.eliminarArchivo(dir);
+            servidor.eliminarArchivo(dir);
+            JOptionPane.showMessageDialog(this, "Directorio eliminado exitosamente");
         } catch (Exception e) {
             System.out.println(e);
         }
         cargarArchivo();
     }//GEN-LAST:event_eliminarDirActionPerformed
-
     private void eliminarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarArchivoActionPerformed
         DefaultTreeModel modelo = (DefaultTreeModel) arbolCliente.getModel();
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) arbolCliente.getLastSelectedPathComponent();
         String path = pathArchivo();
         //path = path.concat("/");
         File dir = new File(path);
-
         try {
-            server.eliminarArchivo(dir);
+            servidor.eliminarArchivo(dir);
+            JOptionPane.showMessageDialog(this, "Archivo eliminado exitosamente");
         } catch (Exception e) {
             System.out.println(e);
         }
         cargarArchivo();
     }//GEN-LAST:event_eliminarArchivoActionPerformed
-
     private void crearArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearArchivoActionPerformed
         String path = pathArchivo();
-        String name = JOptionPane.showInputDialog(this, "Ingrese el nombre del archivo");
+        String name = JOptionPane.showInputDialog(this, "Ingrese el nombre del archivo (sin el .txt)");
         path = path.concat(name);
+        path = path.concat(".txt");
         path = path.concat("/");
         File archivo = new File(path);
-
         try {
-            server.crearArchivo(archivo, true);
+            servidor.crearArchivo(archivo, true);
+            JOptionPane.showMessageDialog(this, "Archivo creado exitosamente");
         } catch (Exception e) {
             System.out.println(e);
+            JOptionPane.showMessageDialog(this, "Ocurrió un error");
         }
         cargarArchivo();
     }//GEN-LAST:event_crearArchivoActionPerformed
-
     private void crearArchivo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearArchivo1ActionPerformed
         String path = pathArchivo();
-        String name = JOptionPane.showInputDialog(this, "Ingrese el nombre del archivo a crear");
+        String name = JOptionPane.showInputDialog(this, "Ingrese el nombre del archivo (sin el .txt)");
         path = path.concat(name);
         path = path.concat("/");
         File archivo = new File(path);
-
         try {
-            server.crearArchivo(archivo, true);
+            servidor.crearArchivo(archivo, true);
+            JOptionPane.showMessageDialog(this, "Archivo creado exitosamente");
         } catch (Exception e) {
             System.out.println(e);
         }
         cargarArchivo();
 
     }//GEN-LAST:event_crearArchivo1ActionPerformed
-
-    private void crearDir1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_crearDir1MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_crearDir1MouseClicked
-
     private void crearDir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearDir1ActionPerformed
         String path = pathArchivo();
-        String name = JOptionPane.showInputDialog(this, "Ingrese el nombre del directorio (carpeta)");
+        String name = JOptionPane.showInputDialog(this, "Ingrese el nombre del directorio");
         path = path.concat(name);
         path = path.concat("/");
         File dir = new File(path);
 
         try {
-            server.crearArchivo(dir, false);
+            servidor.crearArchivo(dir, false);
+            JOptionPane.showMessageDialog(this, "Directorio creado exitosamente");
         } catch (Exception e) {
             System.out.println(e);
         }
         cargarArchivo();
 
     }//GEN-LAST:event_crearDir1ActionPerformed
-
     private void eliminarDir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarDir1ActionPerformed
         String path = pathArchivo();
         //path = path.concat("/");
@@ -491,13 +467,13 @@ public static final String ANSI_GREEN = "\u001B[32m";
         System.out.println(path);
 
         try {
-            server.eliminarArchivo(dir);
+            servidor.eliminarArchivo(dir);
+            JOptionPane.showMessageDialog(this, "Directorio eliminado exitosamente");
         } catch (Exception e) {
             System.out.println(e);
         }
         cargarArchivo();
     }//GEN-LAST:event_eliminarDir1ActionPerformed
-
     private void abrirArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirArchivoActionPerformed
         ta_archivo.setText(fct_seleccionado.getText());
         ta_archivo.setVisible(true);
@@ -505,11 +481,11 @@ public static final String ANSI_GREEN = "\u001B[32m";
         abierto = dirLocalServer(new File(fct_seleccionado.getFile().getAbsolutePath()));
         System.out.println(ANSI_GREEN+"Archivo : " + abierto+" abierto exitosamente"+ANSI_RESET);
     }//GEN-LAST:event_abrirArchivoActionPerformed
-
     private void btn_guardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_guardarMouseClicked
         try {
-            server.editarArchivo(file_seleccionado, ta_archivo.getText());
+            servidor.editarArchivo(file_seleccionado, ta_archivo.getText());
             abierto = "";
+            JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -517,15 +493,10 @@ public static final String ANSI_GREEN = "\u001B[32m";
         ta_archivo.setVisible(false);
         btn_guardar.setVisible(false);
     }//GEN-LAST:event_btn_guardarMouseClicked
-
-    private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_guardarActionPerformed
-
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         System.out.println("Cerrando...");
         try {
-            server.desmontar(name);
+            servidor.desmontar(name);
         } catch (RemoteException e) {
             System.out.println(e);
         }
@@ -546,7 +517,7 @@ public static final String ANSI_GREEN = "\u001B[32m";
     public void cargarArchivo() {
         try {
             
-            DefaultTreeModel modelo = server.cargarDirectorio();
+            DefaultTreeModel modelo = servidor.cargarDirectorio();
             
             arbolCliente.setModel(modelo);
             
@@ -639,7 +610,7 @@ public static final String ANSI_GREEN = "\u001B[32m";
 
     public void regenerar() {
         try {
-            DefaultTreeModel modelo = server.cargarDirectorio();
+            DefaultTreeModel modelo = servidor.cargarDirectorio();
             arbolCliente.setModel(modelo);
             arbolCliente.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
             arbolCliente.setSelectionRow(0);
