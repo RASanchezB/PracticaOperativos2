@@ -29,7 +29,7 @@ public static final String ANSI_GREEN = "\u001B[32m";
 
     public Cliente() throws RemoteException, NotBoundException {
         initComponents();
-        name = JOptionPane.showInputDialog(this, "Favor Ingrese un nombre para identificar al cliente", "Inicio de Cliente", JOptionPane.INFORMATION_MESSAGE);
+        name = JOptionPane.showInputDialog(this, "Identifiquese:", "Ingreso de Nuevo Cliente", JOptionPane.QUESTION_MESSAGE);
         cliente = new Middleware(name, this);
         registry = LocateRegistry.getRegistry(IP, PUERTO);
         System.out.println(ANSI_GREEN+"REGISTRADO EN EL PUERTO "+PUERTO+ANSI_RESET);
@@ -204,6 +204,7 @@ public static final String ANSI_GREEN = "\u001B[32m";
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Acciones del TXT", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 10))); // NOI18N
 
+        btn_guardar.setBackground(new java.awt.Color(255, 255, 255));
         btn_guardar.setText("Guardar");
         btn_guardar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
