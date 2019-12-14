@@ -20,27 +20,26 @@ import javax.swing.tree.DefaultTreeModel;
 
 public class Servidor extends javax.swing.JFrame {
 
-    private static final int PUERTO = 1100; // Si cambias aquí el puerto, recuerda cambiarlo en el cliente
-public static final String ANSI_GREEN = "\u001B[32m";
- public static final String ANSI_RESET = "\u001B[0m";
+    private static final int PUERTO = 1100; 
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_RESET = "\u001B[0m";
     public Registry registry;
-    public Middleware server;
+    public Middleware servidor;
     
     public Servidor() throws RemoteException, AlreadyBoundException {     
         initComponents();
-        jButton1.setVisible(false);
-        server = new Middleware();
+        servidor = new Middleware();
         registry = LocateRegistry.createRegistry(PUERTO);
-       	System.out.println("Servidor escuchando en el puerto " + String.valueOf(PUERTO));
+       	System.out.println("Servidor en el puerto " + String.valueOf(PUERTO));
         System.out.println("Registrado correctamente");
-        registry.bind("fs", server); // Registrar
+        registry.bind("fs", servidor); // Registrar
   
 
-        // cargar arbol
-        System.out.println("updating");
+        // Cargar arbol
+        System.out.println("Actualizando");
         update();
         
-        // iniciar hilo para observar cambios
+        // Hilo para observar los cambios realizados
         try {
 
             Path dir = Paths.get("RootServer");
@@ -55,15 +54,14 @@ public static final String ANSI_GREEN = "\u001B[32m";
     }
 
     public void update() {
-        // cargar arbol
+        // Aqui cargamos el arbol
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(new FileConText(new File("RootServer"), "", false, true));
-         ///AQUI PUSE UNA RUTA DE UNA CARPETA ´PARA PODER VER LO DEMAS
-        server.cargarArbol("RootServer", root);
+        servidor.cargarArbol("RootServer", root);
         arbolServidor.setModel(new DefaultTreeModel(root));
     }
     public void broadcast(String fileChanged) throws RemoteException {
-        if (server.getClients().size() > 0) {
-            server.broadcast(fileChanged);
+        if (servidor.getClients().size() > 0) {
+            servidor.broadcast(fileChanged);
         }
     }
     
@@ -74,7 +72,6 @@ public static final String ANSI_GREEN = "\u001B[32m";
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         arbolServidor = new javax.swing.JTree();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("RootServer");
@@ -84,29 +81,17 @@ public static final String ANSI_GREEN = "\u001B[32m";
 
         jScrollPane1.setViewportView(arbolServidor);
 
-        jButton1.setText("Enviar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(58, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1))
+                .addGap(29, 29, 29))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -122,14 +107,6 @@ public static final String ANSI_GREEN = "\u001B[32m";
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-//        try {
-//            broadcast("RootServer\\i am the beast i worship.txt");
-//        } catch (RemoteException e) {
-//            System.out.println(e);
-//        }
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {       
         /* Set the Nimbus look and feel */
@@ -171,7 +148,6 @@ public static final String ANSI_GREEN = "\u001B[32m";
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arbolServidor;
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

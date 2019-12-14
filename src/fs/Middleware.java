@@ -15,8 +15,8 @@ public class Middleware extends UnicastRemoteObject implements FSInterfaz {
     ArrayList<FSInterfaz> clientes = new ArrayList<>();
     String name;
     Cliente frameCliente;
- public static final String ANSI_GREEN = "\u001B[32m";
- public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_RESET = "\u001B[0m";
     public Middleware() throws RemoteException {
         this.name = "SERVER";
     }
@@ -49,7 +49,7 @@ public class Middleware extends UnicastRemoteObject implements FSInterfaz {
             for (int i = 0; i < clientes.size(); i++) {
                 if (clientes.get(i).getName().equals(name)) {
                     clientes.remove(i);
-                    System.out.println("Se desmonto correctamente: " + name);
+                    System.out.println("Se ha desmontado correctamente: " + name);
                     break;
                 }
             }
@@ -68,12 +68,9 @@ public class Middleware extends UnicastRemoteObject implements FSInterfaz {
     @Override
     public void send(String fileChanged) throws RemoteException {
         System.out.println("Broadcast del servidor: " + fileChanged);
-        // ver si el archivo que el cliente tiene abierto es el que se envio
         if (fileChanged.equals(frameCliente.abierto)) {
-            // si es asi, decirle que hay un conflicto
             frameCliente.conflicto();
         } else {
-            // volver a cargar la estructura
             frameCliente.cargarArchivo();
         }
     }
@@ -81,17 +78,13 @@ public class Middleware extends UnicastRemoteObject implements FSInterfaz {
     @Override
     public DefaultTreeModel cargarDirectorio() throws RemoteException {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(new FileConText(new File("RootServer"), "", false, true));
-        cargarArbol("RootServer", root);/*CON RootServer carga el modelo que se */
-        System.out.println("CARGO EL ARBOL");
+        cargarArbol("RootServer", root);
+        System.out.println("Se ha cargado el Árbol");
         return new DefaultTreeModel(root);
     }
 
     @Override
     public void crearArchivo(File archivoaCrear, boolean esArchivo) throws RemoteException, IOException {
-        // crear un archivo vacio
-        // debe recibir la ruta completa, ej:
-        // C:\\Users\\Nohelia\\RootServer\\341234\\12442\\creame\\laptops.txt
-        
         File fileRes = pathRootServer(archivoaCrear);
 
         if (esArchivo) {
@@ -113,9 +106,6 @@ public class Middleware extends UnicastRemoteObject implements FSInterfaz {
 
     @Override
     public void eliminarArchivo(File archivoaEliminar) throws RemoteException {
-        // eliminar un archivo
-        // debe recibir la ruta completa, ej:
-        // C:\\Users\\Nohelia\\RootServer\\341234\\12442\\creame\\laptops.txt
         File fileRes = pathRootServer(archivoaEliminar);
 
         eliminarDirs(fileRes);
@@ -124,13 +114,11 @@ public class Middleware extends UnicastRemoteObject implements FSInterfaz {
     @Override
     public void agregarCliente(FSInterfaz cliente) throws RemoteException {
        
-        System.out.println(ANSI_GREEN+"Montado, con el cliente:  " + cliente.getName()+ANSI_RESET);
+        System.out.println(ANSI_PURPLE+"Montado, con el cliente:  " + cliente.getName()+ANSI_RESET);
         clientes.add(cliente);
     }
     
     public File pathRootServer(File archivo) {
-        // debe recibir la ruta completa, ej:
-        // C:\\Users\\XXXX\\RootServer\\carpeta\\archivo.txt
 
         String pathRes = archivo.getName();
         File parent = archivo;
@@ -159,11 +147,11 @@ public class Middleware extends UnicastRemoteObject implements FSInterfaz {
     
     public void cargarArbol(String dir, DefaultMutableTreeNode node) {
         File root = new File(dir);
-        System.out.println("Cargando el arbol.....");
+        System.out.println("Cargando el arbol....");
         File[] list = root.listFiles();
-        System.out.println(ANSI_GREEN + "Arbol Cargado......" + ANSI_RESET);
+        System.out.println(ANSI_PURPLE + "Arbol Cargado....." + ANSI_RESET);
         FileConText res;
-         System.out.println(ANSI_GREEN + "Listando Archivos......" + ANSI_RESET);
+         System.out.println(ANSI_PURPLE + "Listando Archivos....." + ANSI_RESET);
         for (File file : list) {
             String filename = file.getName();
             System.out.println(filename);
