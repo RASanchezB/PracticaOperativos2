@@ -28,8 +28,8 @@ public class Servidor extends javax.swing.JFrame {
 
     public Servidor() throws RemoteException, AlreadyBoundException {
         initComponents();
+        System.setProperty("java.rmi.server.hostname", "192.168.0.4");
         servidor = new Middleware();
-        System.setProperty("java.rmi.server.hostname", "190.92.43.109");
         registry = LocateRegistry.createRegistry(PUERTO);
         System.out.println("Servidor en el puerto " + String.valueOf(PUERTO));
         System.out.println("Registrado correctamente");

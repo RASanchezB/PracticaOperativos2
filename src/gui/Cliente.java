@@ -19,7 +19,7 @@ import javax.swing.tree.TreeSelectionModel;
 public class Cliente extends javax.swing.JFrame {
 public static final String ANSI_PURPLE = "\u001B[35m";
  public static final String ANSI_RESET = "\u001B[0m";
-    private static final String IP = "192.168.56.1";
+    private static final String IP = "192.168.0.4";
     private static final int PUERTO = 1100; 
 
     public Registry registry;
@@ -31,7 +31,7 @@ public static final String ANSI_PURPLE = "\u001B[35m";
         initComponents();
         nombre = JOptionPane.showInputDialog(this, "Identifiquese:", "Bienvenido", JOptionPane.QUESTION_MESSAGE);
         cliente = new Middleware(nombre, this);
-        System.setProperty("java.rmi.server.hostname", "190.92.43.109");
+        System.setProperty("java.rmi.server.hostname", "192.168.0.4");
         registry = LocateRegistry.getRegistry(IP, PUERTO);
         System.out.println(ANSI_PURPLE+"REGISTRADO EN EL PUERTO "+PUERTO+ANSI_RESET);
         System.out.println("Buscando........");
