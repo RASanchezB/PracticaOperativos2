@@ -322,7 +322,7 @@ public static final String ANSI_PURPLE = "\u001B[35m";
 
         try {
             if (!montar) {
-                bt_desmontarFS.setText("Desmontar File System");
+                bt_desmontarFS.setText("Desmontar FS");
                 arbolCliente.setEnabled(true);
                 btn_cargarArchivo.setEnabled(true);
                 montar = !montar;
