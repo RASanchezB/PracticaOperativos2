@@ -31,6 +31,7 @@ public static final String ANSI_PURPLE = "\u001B[35m";
         initComponents();
         nombre = JOptionPane.showInputDialog(this, "Identifiquese:", "Bienvenido", JOptionPane.QUESTION_MESSAGE);
         cliente = new Middleware(nombre, this);
+        System.setProperty("java.rmi.server.hostname", "190.92.43.109");
         registry = LocateRegistry.getRegistry(IP, PUERTO);
         System.out.println(ANSI_PURPLE+"REGISTRADO EN EL PUERTO "+PUERTO+ANSI_RESET);
         System.out.println("Buscando........");
