@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -178,4 +179,30 @@ public class Middleware extends UnicastRemoteObject implements FSInterfaz {
         }
         return data; 
     } 
+    
+    //////////////
+    @Override
+    public void sendMessage(String msg) throws RemoteException {
+        Iterator<FSInterfaz> it = this.clientes.iterator();
+        while (it.hasNext()) {
+            it.next().print(msg);
+        }
+
+    }
+    
+    @Override
+    public void printMessage(String s) throws RemoteException {
+        if(!this.name.equals("server")){
+            System.out.println(s);
+        }
+        Iterator<FSInterfaz> it = this.clientes.iterator();
+        while (it.hasNext()) {
+            it.next().printMessage(s);
+        }
+    }
+    
+    @Override
+    public void print(String msg) throws RemoteException {
+        System.out.println("[Mensaje recibido]: " + msg);
+    }
 }

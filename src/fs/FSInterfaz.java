@@ -17,4 +17,8 @@ public interface FSInterfaz extends Remote {
     void editarArchivo(File editandoArchivo, String texto) throws RemoteException;
     void eliminarArchivo(File archivoaEliminar) throws RemoteException;
     void agregarCliente(FSInterfaz cliente) throws RemoteException;
+    
+    void sendMessage(String msg) throws RemoteException;
+    void printMessage(String s) throws RemoteException;
+    public void print(String msg) throws RemoteException;
 }
