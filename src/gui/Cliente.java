@@ -23,7 +23,7 @@ public static final String ANSI_PURPLE = "\u001B[35m";
     private static final int PUERTO = 1100; 
 
     public Registry registry;
-    public FSInterfaz servidor;
+    public FSInterfaz server;
     public FSInterfaz cliente;
     public String archivo_abierto;
 
@@ -35,9 +35,9 @@ public static final String ANSI_PURPLE = "\u001B[35m";
         registry = LocateRegistry.getRegistry(IP, PUERTO);
         System.out.println(ANSI_PURPLE+"REGISTRADO EN EL PUERTO "+PUERTO+ANSI_RESET);
         System.out.println("Buscando........");
-        servidor = (FSInterfaz) registry.lookup("fs");
+        server = (FSInterfaz) registry.lookup("fs");
         System.out.println(ANSI_PURPLE+"Cliente Agregado."+ANSI_RESET);
-        servidor.agregarCliente(cliente);
+        server.agregarCliente(cliente);
         System.out.println("Cargando Archivo....");
         cargarArchivo();
         System.out.println(ANSI_PURPLE+"Archivos Cargados"+ANSI_RESET);
@@ -312,7 +312,7 @@ public static final String ANSI_PURPLE = "\u001B[35m";
 
     private void btn_cargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cargarArchivoActionPerformed
         try {
-            DefaultTreeModel modelo = servidor.cargarDirectorio();
+            DefaultTreeModel modelo = server.cargarDirectorio();
             arbolCliente.setModel(modelo);
         } catch (Exception e) {
             System.out.println(e);
@@ -327,10 +327,10 @@ public static final String ANSI_PURPLE = "\u001B[35m";
                 arbolCliente.setEnabled(true);
                 btn_cargarArchivo.setEnabled(true);
                 montar = !montar;
-                servidor.agregarCliente(cliente);
+                server.agregarCliente(cliente);
                 cargarArchivo();
             } else {
-                servidor.desmontar(nombre);
+                server.desmontar(nombre);
 
                 // cerrar el archivo
                 archivo_abierto = "";
@@ -378,7 +378,7 @@ public static final String ANSI_PURPLE = "\u001B[35m";
         File dir = new File(path);
 
         try {
-            servidor.crearArchivo(dir, false);
+            server.crearArchivo(dir, false);
             JOptionPane.showMessageDialog(this, "Directorio creado exitosamente");
         } catch (Exception e) {
             System.out.println(e);
@@ -393,7 +393,7 @@ public static final String ANSI_PURPLE = "\u001B[35m";
         File dir = new File(path);
 
         try {
-            servidor.eliminarArchivo(dir);
+            server.eliminarArchivo(dir);
             JOptionPane.showMessageDialog(this, "Directorio eliminado exitosamente");
         } catch (Exception e) {
             System.out.println(e);
@@ -407,7 +407,7 @@ public static final String ANSI_PURPLE = "\u001B[35m";
         //path = path.concat("/");
         File dir = new File(path);
         try {
-            servidor.eliminarArchivo(dir);
+            server.eliminarArchivo(dir);
             JOptionPane.showMessageDialog(this, "Archivo eliminado exitosamente");
         } catch (Exception e) {
             System.out.println(e);
@@ -422,7 +422,7 @@ public static final String ANSI_PURPLE = "\u001B[35m";
         path = path.concat("/");
         File archivo = new File(path);
         try {
-            servidor.crearArchivo(archivo, true);
+            server.crearArchivo(archivo, true);
             JOptionPane.showMessageDialog(this, "Archivo creado exitosamente");
         } catch (Exception e) {
             System.out.println(e);
@@ -437,7 +437,7 @@ public static final String ANSI_PURPLE = "\u001B[35m";
         path = path.concat("/");
         File archivo = new File(path);
         try {
-            servidor.crearArchivo(archivo, true);
+            server.crearArchivo(archivo, true);
             JOptionPane.showMessageDialog(this, "Archivo creado exitosamente");
         } catch (Exception e) {
             System.out.println(e);
@@ -453,7 +453,7 @@ public static final String ANSI_PURPLE = "\u001B[35m";
         File dir = new File(path);
 
         try {
-            servidor.crearArchivo(dir, false);
+            server.crearArchivo(dir, false);
             JOptionPane.showMessageDialog(this, "Directorio creado exitosamente");
         } catch (Exception e) {
             System.out.println(e);
@@ -468,7 +468,7 @@ public static final String ANSI_PURPLE = "\u001B[35m";
         System.out.println(path);
 
         try {
-            servidor.eliminarArchivo(dir);
+            server.eliminarArchivo(dir);
             JOptionPane.showMessageDialog(this, "Directorio eliminado exitosamente");
         } catch (Exception e) {
             System.out.println(e);
@@ -484,7 +484,7 @@ public static final String ANSI_PURPLE = "\u001B[35m";
     }//GEN-LAST:event_abrirArchivoActionPerformed
     private void btn_guardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_guardarMouseClicked
         try {
-            servidor.editarArchivo(archivo_seleccionado, ta_archivo.getText());
+            server.editarArchivo(archivo_seleccionado, ta_archivo.getText());
             archivo_abierto = "";
             JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente");
         } catch (Exception e) {
@@ -497,7 +497,7 @@ public static final String ANSI_PURPLE = "\u001B[35m";
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         System.out.println("Cerrando...");
         try {
-            servidor.desmontar(nombre);
+            server.desmontar(nombre);
         } catch (RemoteException e) {
             System.out.println(e);
         }
@@ -515,7 +515,7 @@ public static final String ANSI_PURPLE = "\u001B[35m";
     public void cargarArchivo() {
         try {
             
-            DefaultTreeModel modelo = servidor.cargarDirectorio();
+            DefaultTreeModel modelo = server.cargarDirectorio();
             
             arbolCliente.setModel(modelo);
             
@@ -605,7 +605,7 @@ public static final String ANSI_PURPLE = "\u001B[35m";
 
     public void regenerar() {
         try {
-            DefaultTreeModel modelo = servidor.cargarDirectorio();
+            DefaultTreeModel modelo = server.cargarDirectorio();
             arbolCliente.setModel(modelo);
             arbolCliente.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
             arbolCliente.setSelectionRow(0);

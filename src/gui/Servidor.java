@@ -24,16 +24,16 @@ public class Servidor extends javax.swing.JFrame {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_RESET = "\u001B[0m";
     public Registry registry;
-    public Middleware servidor;
+    public Middleware server;
 
     public Servidor() throws RemoteException, AlreadyBoundException {
         initComponents();
         System.setProperty("java.rmi.server.hostname", "192.168.0.4");
-        servidor = new Middleware();
+        server = new Middleware();
         registry = LocateRegistry.createRegistry(PUERTO);
         System.out.println("Servidor en el puerto " + String.valueOf(PUERTO));
         System.out.println("Registrado correctamente");
-        registry.bind("fs", servidor); // Registrar
+        registry.bind("fs", server); // Registrar
 
         // Cargar arbol
         System.out.println("Actualizando");
@@ -56,13 +56,13 @@ public class Servidor extends javax.swing.JFrame {
     public void update() {
         // Aqui cargamos el arbol
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(new FileConText(new File("RootServer"), "", false, true));
-        servidor.cargarArbol("RootServer", root);
+        server.cargarArbol("RootServer", root);
         arbolServidor.setModel(new DefaultTreeModel(root));
     }
 
     public void broadcast(String fileChanged) throws RemoteException {
-        if (servidor.getClients().size() > 0) {
-            servidor.broadcast(fileChanged);
+        if (server.getClients().size() > 0) {
+            server.broadcast(fileChanged);
         }
     }
 
@@ -159,10 +159,10 @@ public class Servidor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void servidor_mensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_servidor_mensajeActionPerformed
-        if (servidor.getClients().size() > 0) {
+        if (server.getClients().size() > 0) {
             try {
                 if (!"".equals(servidorTA.getText())) {
-                    servidor.sendMessage(servidorTA.getText() + "");
+                    server.sendMessage(servidorTA.getText() + "");
                     servidorTA.setText("");
                 }
             } catch (RemoteException ex) {
