@@ -20,7 +20,8 @@ import javax.swing.tree.DefaultTreeModel;
 
 public class Servidor extends javax.swing.JFrame {
 
-    private static final int PUERTO = 1100;
+    private static final int PUERTO = 21;
+    private static final String IP = "25.7.38.7";
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_RESET = "\u001B[0m";
     public Registry registry;
@@ -28,7 +29,7 @@ public class Servidor extends javax.swing.JFrame {
 
     public Servidor() throws RemoteException, AlreadyBoundException {
         initComponents();
-        System.setProperty("java.rmi.server.hostname", "192.168.0.4");
+        System.setProperty("java.rmi.server.hostname", IP);
         server = new Middleware();
         registry = LocateRegistry.createRegistry(PUERTO);
         System.out.println("Servidor en el puerto " + String.valueOf(PUERTO));

@@ -13,20 +13,25 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 public class Middleware extends UnicastRemoteObject implements FSInterfaz {
+
     ArrayList<FSInterfaz> clientes = new ArrayList<>();
     String name;
     Cliente frameCliente;
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_RESET = "\u001B[0m";
+
     public Middleware() throws RemoteException {
         this.name = "SERVER";
+        System.setProperty("java.rmi.server.hostname", "25.7.38.7");
     }
 
     public Middleware(String name, Cliente frameCliente) throws RemoteException {
         this.name = name;
         this.frameCliente = frameCliente;
+        System.setProperty("java.rmi.server.hostname", "25.7.38.7");
+
     }
-    
+
     @Override
     public String getName() {
         return name;
@@ -35,7 +40,7 @@ public class Middleware extends UnicastRemoteObject implements FSInterfaz {
     public Cliente getFrame() {
         return frameCliente;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
@@ -75,7 +80,7 @@ public class Middleware extends UnicastRemoteObject implements FSInterfaz {
             frameCliente.cargarArchivo();
         }
     }
-    
+
     @Override
     public DefaultTreeModel cargarDirectorio() throws RemoteException {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(new FileConText(new File("RootServer"), "", false, true));
@@ -114,11 +119,11 @@ public class Middleware extends UnicastRemoteObject implements FSInterfaz {
 
     @Override
     public void agregarCliente(FSInterfaz cliente) throws RemoteException {
-       
-        System.out.println(ANSI_PURPLE+"Montado, con el cliente:  " + cliente.getName()+ANSI_RESET);
+
+        System.out.println(ANSI_PURPLE + "Montado, con el cliente:  " + cliente.getName() + ANSI_RESET);
         clientes.add(cliente);
     }
-    
+
     public File pathRootServer(File archivo) {
 
         String pathRes = archivo.getName();
@@ -135,7 +140,7 @@ public class Middleware extends UnicastRemoteObject implements FSInterfaz {
         pathRes = "RootServer/" + pathRes;
         return new File(pathRes);
     }
-    
+
     public void eliminarDirs(File root) {
         File[] allContents = root.listFiles();
         if (allContents != null) {
@@ -145,14 +150,14 @@ public class Middleware extends UnicastRemoteObject implements FSInterfaz {
         }
         root.delete();
     }
-    
+
     public void cargarArbol(String dir, DefaultMutableTreeNode node) {
         File root = new File(dir);
         System.out.println("Cargando el arbol....");
         File[] list = root.listFiles();
         System.out.println(ANSI_PURPLE + "Arbol Cargado....." + ANSI_RESET);
         FileConText res;
-         System.out.println(ANSI_PURPLE + "Listando Archivos....." + ANSI_RESET);
+        System.out.println(ANSI_PURPLE + "Listando Archivos....." + ANSI_RESET);
         for (File file : list) {
             String filename = file.getName();
             System.out.println(filename);
@@ -163,23 +168,23 @@ public class Middleware extends UnicastRemoteObject implements FSInterfaz {
             } else if (file.isDirectory()) {
                 res = new FileConText(file, "", false, true);
                 DefaultMutableTreeNode subdir = new DefaultMutableTreeNode(res);
-                File subdirfile = new File(root.getAbsolutePath(),  filename);
+                File subdirfile = new File(root.getAbsolutePath(), filename);
                 cargarArbol(subdirfile.getAbsolutePath(), subdir);
                 node.add(subdir);
             }
         }
     }
-    
-    public static String readFile(String fileName) { 
-        String data = ""; 
+
+    public static String readFile(String fileName) {
+        String data = "";
         try {
-            data = new String(Files.readAllBytes(Paths.get(fileName))); 
+            data = new String(Files.readAllBytes(Paths.get(fileName)));
         } catch (IOException e) {
             System.out.println(e);
         }
-        return data; 
-    } 
-    
+        return data;
+    }
+
     //////////////
     @Override
     public void sendMessage(String msg) throws RemoteException {
@@ -189,10 +194,10 @@ public class Middleware extends UnicastRemoteObject implements FSInterfaz {
         }
 
     }
-    
+
     @Override
     public void printMessage(String s) throws RemoteException {
-        if(!this.name.equals("server")){
+        if (!this.name.equals("server")) {
             System.out.println(s);
         }
         Iterator<FSInterfaz> it = this.clientes.iterator();
@@ -200,7 +205,7 @@ public class Middleware extends UnicastRemoteObject implements FSInterfaz {
             it.next().printMessage(s);
         }
     }
-    
+
     @Override
     public void print(String msg) throws RemoteException {
         System.out.println("[Mensaje recibido]: " + msg);

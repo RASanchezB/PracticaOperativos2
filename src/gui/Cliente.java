@@ -19,8 +19,8 @@ import javax.swing.tree.TreeSelectionModel;
 public class Cliente extends javax.swing.JFrame {
 public static final String ANSI_PURPLE = "\u001B[35m";
  public static final String ANSI_RESET = "\u001B[0m";
-    private static final String IP = "192.168.0.4";
-    private static final int PUERTO = 1100; 
+    private static final String IP = "25.7.38.7";
+    private static final int PUERTO = 21; 
 
     public Registry registry;
     public FSInterfaz server;
@@ -31,13 +31,13 @@ public static final String ANSI_PURPLE = "\u001B[35m";
         initComponents();
         nombre = JOptionPane.showInputDialog(this, "Identifiquese:", "Bienvenido", JOptionPane.QUESTION_MESSAGE);
         cliente = new Middleware(nombre, this);
-        System.setProperty("java.rmi.server.hostname", "192.168.0.4");
+        System.setProperty("java.rmi.server.hostname", IP);
         registry = LocateRegistry.getRegistry(IP, PUERTO);
         System.out.println(ANSI_PURPLE+"REGISTRADO EN EL PUERTO "+PUERTO+ANSI_RESET);
         System.out.println("Buscando........");
         server = (FSInterfaz) registry.lookup("fs");
         System.out.println(ANSI_PURPLE+"Cliente Agregado."+ANSI_RESET);
-        server.agregarCliente(cliente);
+        server.agregarCliente(((FSInterfaz)cliente));
         System.out.println("Cargando Archivo....");
         cargarArchivo();
         System.out.println(ANSI_PURPLE+"Archivos Cargados"+ANSI_RESET);
@@ -504,7 +504,7 @@ public static final String ANSI_PURPLE = "\u001B[35m";
     }//GEN-LAST:event_formWindowClosing
 
     public void conflicto() {
-        JOptionPane.showMessageDialog(this, "Se detectó un conflicto con el archivo que tiene abierto:\n" + archivo_abierto);
+        JOptionPane.showMessageDialog(this, "Se detectó un conflicto con el archivo abierto:\n" + archivo_abierto);
         // cerrar el archivo
         archivo_abierto = "";
         ta_archivo.setVisible(false);
